@@ -9,10 +9,10 @@ import Register from "../img/registers.png";
 
 const NavigationBar = () => {
   return (  
-    <div className="custom-nav my-2">
+    <div className="custom-nav my-2   ">
       <Navbar collapseOnSelect bg="transparent" expand="lg">
         <Container>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="/">
             <img src={Logo} alt="logo" />
             <span>Gabungin</span>
           </Navbar.Brand>
@@ -20,7 +20,7 @@ const NavigationBar = () => {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="ms-auto">
               <Nav.Link href="/home">Beranda</Nav.Link>
-              <Nav.Link href="/features">fitur</Nav.Link>
+              <Nav.Link href="/fitur">fitur</Nav.Link>
               <Nav.Link href="/testimoni">Testimoni</Nav.Link>
               <Nav.Link href="/about">Tentang Kami</Nav.Link>
             </Nav>
