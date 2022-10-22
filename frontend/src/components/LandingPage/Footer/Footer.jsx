@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   const background = {
-    backgroundColor: "#60a5fa",
+    backgroundColor: "#fffc00",
   };
   return (
     <>
