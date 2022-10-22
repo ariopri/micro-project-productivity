@@ -94,7 +94,7 @@ const Fitur = () => {
         </div>
       </section>
       <section>
-        <div className="container">
+        <div className="container fitur3">
           <div className="row">
             <div className="col-md-3">
               <img src={Kanban} alt="Gambar" className="pictures img-fluid" />
