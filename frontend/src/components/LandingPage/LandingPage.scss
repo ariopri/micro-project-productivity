@@ -9,7 +9,43 @@
   $textColor: #393c43;
 }
 
+// mixin
+@mixin tombol {
+  display: inline-block;
+  color: black;
+  background-color: #fffc00;
+  border-radius: 2em;
+  padding: 0.5em 2em;
+  text-decoration: none;
+}
+
 // Styles
 body {
   font-family: "Montserrat", sans-serif;
+}
+
+.custom {
+  background-image: linear-gradient(180deg, #fffc00, #fafafa);
+}
+.custom-section {
+  h2 {
+    margin-top: 5em;
+    line-height: 1;
+  }
+  p {
+    line-height: 1;
+    margin-top: 1em;
+  }
+  a {
+    margin-top: 1.5em;
+    @include tombol;
+    border: 1px solid transparent;
+    transition: 0.5s;
+
+    &:hover {
+     color: #393c43;
+     border: 1px solid #393c43;
+     background-color: transparent;
+    }
+  }
 }
