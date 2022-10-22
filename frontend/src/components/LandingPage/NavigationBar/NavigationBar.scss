@@ -1,48 +1,45 @@
 .custom-nav {
-    .fa-bars {
-        float: inline-end;
+  img {
+    width: 40px;
+    height: 40px;
+    margin-top: -5px;
+  }
+  span {
+    color: #fffc00;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-left: 0.5em;
+  }
+  .nav-link {
+    margin-left: 1.2em;
+    text-transform: uppercase;
+    color: #fffc00;
+  }
+  .sign-up-button {
+    img {
+      width: 20px;
+      height: 20px;
+      margin-right: 7px;
+      margin-top: -5px;
     }
-        img {
-            width: 40px;
-            height: 40px;
-            margin-top: -5px;
-        }
-        span {
-            color: #fffc00;
-            font-weight: 700;
-            font-size: 1.4rem;
-            margin-left: 0.5em;
-        }
-        .nav-link{
-            margin-left: 1.2em;
-            text-transform: uppercase;
-            color: #fffc00;
-        }
-        .sign-up-button {
-            img {
-                width: 20px;
-                height: 20px;
-                margin-right: 7px;
-                margin-top: -5px;
-            }
-            background-color: #fffc00;
-            color: #fafafa  ;
-            border: none;
-            border-radius:1em;
-            padding: 0.4em 0.4em;
-            padding-left: 1em;
-            padding-right: 1em ;
-            // padding: 0.5em 1em;
-            margin-left: 1.2em;
-            font-weight: 700;
-            text-transform: uppercase;
-            transition: 0.3s color ease;
+    background-color: #fffc00;
+    color: white;
+    border: none;
+    border-radius: 1em;
+    padding: 0.4em 0.4em;
+    padding-left: 1em;
+    padding-right: 1em;
+    // padding: 0.5em 1em;
+    margin-left: 1.2em;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: 0.3s color ease;
 
-            &:hover {
-                color: darken(#000000, 30%);
-            }
-        }
-    @media screen and (max-width: 768px) {
-        margin-top: -1emx;
+    &:hover {
+      color: darken(#000000, 30%);
     }
+  }
+  @media screen and (max-width: 768px) {
+    margin-top: -1emx;
+  }
 }
