@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type Model struct {
@@ -15,7 +17,7 @@ type database struct {
 }
 
 func (d *database) initializeDB() error {
-	db, err := sql.Open("sqlite3", "/gabungin.db")
+	db, err := sql.Open("sqlite3", "/salurin.db")
 	if err != nil {
 		panic(err)
 	}

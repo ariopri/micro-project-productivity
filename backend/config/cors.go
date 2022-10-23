@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func newCors() gin.HandlerFunc {
+func NewCORS() gin.HandlerFunc {
 	return cors.New(cors.Config{
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{"GET", "PATCH", "POST", "DELETE", "PUT"},

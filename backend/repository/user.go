@@ -9,9 +9,9 @@ import (
 
 type UserRepository interface {
 	FindByEmail(email string) (entity.User, error)
-	FindByID(ID int) (entity.User, error)
-	Update(user entity.User) (entity.User, error)
+	FindByID(id int) (entity.User, error)
 	Save(user entity.User) (entity.User, error)
+	Update(user entity.User) (entity.User, error)
 }
 
 type userRepository struct {
@@ -23,7 +23,7 @@ func NewUserRepository(db *sql.DB) *userRepository {
 }
 
 func (r *userRepository) FindByEmail(email string) (entity.User, error) {
-	sqlSmt := `SELECT id, name, email, password_hash from users WHERE email = ?`
+	sqlSmt := `SELECT id,name,email,password_hash,avatar FROM users WHERE email = ?`
 	fmt.Println(email)
 	var model entity.User
 	row, err := r.db.Query(sqlSmt, email)
@@ -31,44 +31,19 @@ func (r *userRepository) FindByEmail(email string) (entity.User, error) {
 		return model, err
 	}
 	if row.Next() {
-		err := row.Scan(&model.ID, &model.Name, &model.Email, &model.PasswordHash)
+		err := row.Scan(&model.ID, &model.Name, &model.Email, &model.PasswordHash, &model.Avatar)
 		if err != nil {
 			return model, err
 		}
 	}
 	defer row.Close()
-	return model, nil
-}
 
-func (r *userRepository) FindByID(id int) (entity.User, error) {
-	sqlSmt := `SELECT id, name, email, password_hash from users WHERE id = ?`
-	var model entity.User
-	row, err := r.db.Query(sqlSmt, id)
-	if err != nil {
-		return model, err
-	}
-	if row.Next() {
-		err := row.Scan(&model.ID, &model.Name, &model.Email, &model.PasswordHash)
-		if err != nil {
-			return model, err
-		}
-	}
-	defer row.Close()
 	return model, nil
-}
-
-func (r *userRepository) Update(user entity.User) (entity.User, error) {
-	sqlSmt := `UPDATE users SET name = ?, email = ?, password_hash = ? WHERE id = ?`
-	_, err := r.db.Exec(sqlSmt, user.Name, user.Email, user.PasswordHash, user.ID)
-	if err != nil {
-		return user, err
-	}
-	return user, nil
 }
 
 func (r *userRepository) Save(user entity.User) (entity.User, error) {
-	sqlSmt := `INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)`
-	row, err := r.db.Exec(sqlSmt, user.Name, user.Email, user.PasswordHash)
+	sqlSmt := `INSERT INTO users(name,email,password_hash,avatar) VALUES(?,?,?,?)`
+	row, err := r.db.Exec(sqlSmt, user.Name, user.Email, user.PasswordHash, user.Avatar)
 	if err != nil {
 		return user, err
 	}
@@ -77,5 +52,31 @@ func (r *userRepository) Save(user entity.User) (entity.User, error) {
 		return user, err
 	}
 	user.ID = int(id)
+
+	return user, nil
+}
+func (r *userRepository) FindByID(id int) (entity.User, error) {
+	sqlSmt := `SELECT id,name,email,password_hash,avatar FROM users WHERE id = ?`
+	var model entity.User
+	rows, err := r.db.Query(sqlSmt, id)
+	if err != nil {
+		return model, err
+	}
+	if rows.Next() {
+		err := rows.Scan(&model.ID, &model.Name, &model.Email, &model.PasswordHash, &model.Avatar)
+		if err != nil {
+			return model, err
+		}
+	}
+	defer rows.Close()
+	return model, nil
+}
+
+func (r *userRepository) Update(user entity.User) (entity.User, error) {
+	sqlSmt := `UPDATE users SET name=?,email=?,password_hash=?,avatar=? WHERE id = ?`
+	_, err := r.db.Exec(sqlSmt, user.Name, user.Email, user.PasswordHash, user.Avatar, user.ID)
+	if err != nil {
+		return user, err
+	}
 	return user, nil
 }
