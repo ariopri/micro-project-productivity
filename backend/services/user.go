@@ -1,8 +1,7 @@
-package service
+package services
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/ariopri/micro-project-productivity/tree/main/backend/entity"
 	"github.com/ariopri/micro-project-productivity/tree/main/backend/repository"
@@ -13,8 +12,9 @@ type UserService interface {
 	Login(form entity.LoginRequest) (entity.User, error)
 	RegisterUser(form entity.RegisterRequest) (entity.User, error)
 	GetUserByID(id int) (entity.User, error)
-	CheckEmailAvailability(form entity.CheckEmailAvaliableRequest) (bool, error)
-	ResetPassword(form entity.ResetPasswordRequest) (entity.User, error)
+	CheckEmailAvailability(form entity.CheckEmailAvailableRequest) (bool, error)
+	SaveAvatarImage(id int, fileLocation string) (entity.User, error)
+	ResetUserPasssword(form entity.ResetPasswordUserRequest) (entity.User, error)
 }
 
 type userService struct {
@@ -31,11 +31,11 @@ func (s *userService) Login(form entity.LoginRequest) (entity.User, error) {
 		return model, err
 	}
 	if model.ID == 0 {
-		return model, errors.New("user not found")
+		return model, errors.New("User not found")
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(model.PasswordHash), []byte(form.Password))
 	if err != nil {
-		return model, fmt.Errorf("invalid password")
+		return model, errors.New("Password inccorect")
 	}
 	return model, nil
 }
@@ -53,6 +53,7 @@ func (s *userService) RegisterUser(register entity.RegisterRequest) (entity.User
 	if err != nil {
 		return newUser, err
 	}
+
 	return newUser, nil
 
 }
@@ -65,12 +66,12 @@ func (s *userService) GetUserByID(id int) (entity.User, error) {
 	}
 	//Is Found?
 	if model.ID == 0 {
-		return model, fmt.Errorf("user not found")
+		return model, errors.New("User not found")
 	}
 	return model, nil
 }
 
-func (s *userService) CheckEmailAvailability(form entity.CheckEmailAvaliableRequest) (bool, error) {
+func (s *userService) CheckEmailAvailability(form entity.CheckEmailAvailableRequest) (bool, error) {
 	email := form.Email
 	user, err := s.repository.FindByEmail(email)
 	if err != nil {
@@ -82,13 +83,26 @@ func (s *userService) CheckEmailAvailability(form entity.CheckEmailAvaliableRequ
 	return false, err
 }
 
-func (s *userService) ResetUserPasssword(form entity.ResetPasswordRequest) (entity.User, error) {
+func (s *userService) SaveAvatarImage(id int, fileLocation string) (entity.User, error) {
+	user, err := s.repository.FindByID(id)
+	if err != nil {
+		return user, err
+	}
+	user.Avatar = fileLocation
+	userUpdated, err := s.repository.Update(user)
+	if err != nil {
+		return user, err
+	}
+	return userUpdated, nil
+}
+
+func (s *userService) ResetUserPasssword(form entity.ResetPasswordUserRequest) (entity.User, error) {
 	user, err := s.repository.FindByEmail(form.Email)
 	if err != nil {
 		return user, err
 	}
 	if form.Name != user.Name {
-		return user, errors.New("incorect username or email")
+		return user, errors.New("Incorect Username or Email")
 	}
 
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(form.NewPassword), bcrypt.MinCost)
